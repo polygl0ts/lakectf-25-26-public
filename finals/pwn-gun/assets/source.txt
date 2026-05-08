@@ -1,0 +1,32 @@
+
+rooftop1 - https://www.shutterstock.com/image-photo/tokyo-japan-september-19-2023-260nw-2364219509.jpg
+rooftop2 - https://thumbs.dreamstime.com/b/abstract-top-down-industrial-perspective-roof-ventilations-modern-urban-building-vertical-top-down-photograph-429684546.jpg
+scope - https://t3.ftcdn.net/jpg/05/41/64/00/360_F_541640006_8UBrFfv0RvWtFxkk0tqDhTFaiPR4nehY.jpg
+
+https://www.asciiart.eu/image-to-ascii
+
+https://github.com/Hugana/p2ascii
+https://github.com/Hugana/p2ascii/issues/1
+
+https://github.com/k4lizen/ascii_stolen
+
+# p2ascii cc2ctext rooftop2.jpg auto > rooftop2.txt
+
+ffmpeg -i rooftop2.jpg -vf "scale=iw*0.75:ih*0.75" -q:v 2 rooftop2p75.jpg
+ffmpeg -i rooftop2p75.jpg -vf "crop=iw:ih*0.6:0:ih*0.4" rooftop_final.jpg
+asciime rooftop_final.jpg --color --cols 128 > rooftop.txt
+python txt_to_c.py rooftop.txt rooftop_ascii.c
+
+# p2ascii cc2ctext rooftop_final.jpg auto > rooftop.txt
+
+ffmpeg -i scope.jpg -vf "negate" scope_neg.jpg
+ffmpeg -i scope_neg.jpg -vf "scale=iw*0.80:ih*0.80" -q:v 2 scope_final.jpg
+asciime scope_final.jpg --cols 128 > scope.txt
+python txt_to_c.py scope.txt scope_ascii.c
+
+
+# p2ascii cc2text scope_final.jpg 150 > scope.txt
+# p2ascii cc2text scope_final.jpg auto
+
+
+

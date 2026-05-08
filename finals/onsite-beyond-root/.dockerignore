@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+.git/
+.gitignore
+*.md
+.dockerignore
+Dockerfile
+stored_image.png

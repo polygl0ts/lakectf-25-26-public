@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Chat{% endblock %}
+
+{% block head %}
+<script>
+    window.PAGE_DATA.chatId = {{ chat_id|tojson }};
+</script>
+<script type="module">
+    import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.4.0/+esm';
+    window.DOMPurify = DOMPurify;
+</script>
+{% if raw_lang %}
+<script src="/static/lang/{{ raw_lang }}.js"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='chat.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<main class="page-grid single-column">
+    <section class="panel chat-panel stack">
+        <div class="status-strip">
+            <span id="chatStatus" class="status-badge" data-i18n="statusLoading">Loading</span>
+            <span id="queuePosition" class="status-note"></span>
+        </div>
+        <div class="chat-thread">
+            <article class="chat-bubble chat-bubble--user">
+                <header class="chat-bubble__meta">
+                    <span class="chat-bubble__author" data-i18n="chatYou">You</span>
+                </header>
+                <div id="promptContent" class="chat-bubble__body rich-text"></div>
+            </article>
+            <article class="chat-bubble chat-bubble--assistant">
+                <header class="chat-bubble__meta">
+                    <span class="chat-bubble__author" data-i18n="chatAssistant">polygl0ts</span>
+                    <span id="answerMeta" class="chat-bubble__note"></span>
+                </header>
+                <div id="answerContent" class="chat-bubble__body rich-text"></div>
+            </article>
+        </div>
+        <div class="chat-actions">
+            <a class="secondary-button as-link" href="/" data-i18n="askAnother">Ask another question</a>
+        </div>
+    </section>
+</main>
+{% endblock %}

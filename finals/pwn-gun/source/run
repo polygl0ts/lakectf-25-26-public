@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mkdir -p /tmp/
+
+cp ./libc.so.6 /tmp/libc.so.6
+cp ./ld-linux-x86-64.so.2 /tmp/ld-linux-x86-64.so.2
+
+./rooftop
+
+if [ $? -eq 42 ]; then
+  echo "and find yourself in front of a man with his gun pointing to your head."
+	echo "You pull the trigger of your gun, but you have no bullets left."
+	echo "He does."
+fi

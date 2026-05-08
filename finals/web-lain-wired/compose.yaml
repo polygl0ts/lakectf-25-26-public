@@ -1,0 +1,10 @@
+services:
+  web-lain-wired:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8088:1337"
+    environment:
+      - PORT=1337
+      - BASE_URL=http://127.0.0.1:1337
+      - FLAG=EPFL{wh4t_7h3_h3ll_h4pp3n3d_th4t_w45_t00_much_cu570miz47ion}

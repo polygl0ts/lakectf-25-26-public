@@ -1,0 +1,11 @@
+node_modules
+__pycache__
+*.pyc
+.DS_Store
+.git
+.parcel-cache
+dist
+frontend/node_modules
+frontend/.parcel-cache
+frontend/dist
+static/.parcel-cache

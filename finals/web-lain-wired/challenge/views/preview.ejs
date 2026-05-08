@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lain // Patch Preview</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="/submission/<%= submission.id %>.css">
+</head>
+<body>
+    <main class="shell">
+        <section class="panel hero">
+            <p class="eyebrow">operator preview</p>
+            <h1>Portrait Patch Preview #<%= submission.id %></h1>
+            <p class="lede">Operator-facing render of your stylesheet.</p>
+            <nav class="nav-row">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/telemetry">Review Telemetry</a>
+                <a href="/submission/<%= submission.id %>.css">Raw Stylesheet</a>
+            </nav>
+        </section>
+
+        <section class="panel">
+            <article class="preview-card review-mode">
+                <div class="portrait-shell">
+                    <div class="portrait-screen">
+                        <div class="avatar-card">
+                            <div class="avatar-stage">
+                                <div class="avatar-shadow"></div>
+                                <div class="avatar-body">
+                                    <div class="avatar-head skin-region">
+                                        <div class="avatar-hair hair-region"></div>
+                                        <div class="avatar-eye eye-region eye-left"></div>
+                                        <div class="avatar-eye eye-region eye-right"></div>
+                                        <div class="avatar-mouth mouth-region"></div>
+                                    </div>
+                                    <div class="avatar-neck skin-region"></div>
+                                    <div class="avatar-jacket jacket-region"></div>
+                                    <div class="avatar-shirt shirt-region"></div>
+                                    <div class="avatar-tie accent-region"></div>
+                                </div>
+                            </div>
+                            <div class="card-caption">
+                                <span class="caption-label">preview subject</span>
+                                <strong class="caption-name">wired-girl</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-copy">
+                    <p class="eyebrow">preview target</p>
+                    <h3>Profile Card Generator</h3>
+                    <p class="hint">Submission <code>#<%= submission.id %></code> is currently <code><%= submission.status %></code>.</p>
+                    <p class="hint">Use this page to verify visual changes.</p>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>

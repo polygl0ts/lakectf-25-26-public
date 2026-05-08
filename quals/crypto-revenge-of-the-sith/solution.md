@@ -1,0 +1,1 @@
+The intended solution is to BKZ, but brute force (in a smart way) only takes 6 minutes on my computer!

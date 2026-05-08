@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.0/dist/purify.min.js" defer></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<main class="page-grid dashboard-grid">
+    <section class="panel claim-panel stack">
+        <div class="panel-heading">
+            <div>
+                <div class="eyebrow" data-i18n="dashboardEyebrow">polygl0ts console</div>
+                <h2 data-i18n="dashboardTitle">Answer a question</h2>
+            </div>
+            <span id="claimStatusPill" class="status-badge is-idle" data-i18n="dashStatusIdle">Idle</span>
+        </div>
+
+        <div id="claimIdleView" class="stack">
+            <p class="muted-text" data-i18n="dashboardBody">Pick the next question from the queue. You get 90 seconds per claim, extended while you keep typing.</p>
+            <div class="info-card" id="idleQueueSummary">
+                <div class="eyebrow" data-i18n="queueCountLabel">In queue</div>
+                <div class="big-number"><span id="idleQueueCount">0</span></div>
+                <p class="muted-text" id="idleQueueHint" data-i18n="queueIdleHint">Queue empty.</p>
+            </div>
+            <button type="button" class="primary-button large-button" id="claimNext" data-i18n="claimNext">Take next question</button>
+            <p id="idleError" class="error-text" hidden></p>
+        </div>
+
+        <div id="claimActiveView" class="stack" hidden>
+            <div class="claim-meta">
+                <span class="status-badge locale-tag" id="claimLocale">EN</span>
+                <span id="claimTimer" class="status-note" aria-live="polite"></span>
+            </div>
+            <div class="message-card">
+                <div class="message-label" data-i18n="playerQuestionLabel">Player question</div>
+                <div id="claimPrompt" class="rich-text"></div>
+                <div id="claimUrl" class="status-note mono-url"></div>
+            </div>
+            <label for="answerDraft" class="field-label" data-i18n="draftLabel">Your answer (supports bold / italic / headings)</label>
+            <textarea id="answerDraft" rows="8" maxlength="4000" data-i18n-placeholder="draftPlaceholder" placeholder="hint, caveat, next step"></textarea>
+            <div class="form-meta">
+                <button type="button" class="secondary-button" id="abandonClaim" data-i18n="abandonClaim" title="" data-i18n-title="abandonClaimHint">Put back in queue</button>
+                <button type="button" class="primary-button" id="submitAnswer" data-i18n="submitAnswer">Send answer</button>
+            </div>
+            <p id="activeError" class="error-text" hidden></p>
+            <p id="activeInfo" class="muted-text" hidden></p>
+        </div>
+    </section>
+
+    <aside class="panel dashboard-sidebar stack">
+        <div class="tab-row dashboard-tabs">
+            <button type="button" class="auth-tab is-active" data-tab="queue">
+                <span data-i18n="queueTab">Queue</span>
+                <span class="tab-count" id="queueTabCount">0</span>
+            </button>
+            <button type="button" class="auth-tab" data-tab="answered">
+                <span data-i18n="answeredTab">Answered</span>
+                <span class="tab-count" id="answeredTabCount">0</span>
+            </button>
+        </div>
+
+        <div class="tab-pane" data-pane="queue">
+            <div id="queueEmpty" class="empty-state" data-i18n="noQueue">Queue is empty.</div>
+            <div id="queueList" class="history-list"></div>
+            <div id="otherClaimedSection" hidden>
+                <div class="eyebrow other-claimed-heading" data-i18n="otherClaimedLabel">Being answered by someone else</div>
+                <div id="otherClaimedList" class="history-list compact"></div>
+            </div>
+        </div>
+
+        <div class="tab-pane" data-pane="answered" hidden>
+            <div id="answeredEmpty" class="empty-state" data-i18n="noAnswered">No answered questions yet.</div>
+            <div id="answeredList" class="history-list"></div>
+        </div>
+    </aside>
+</main>
+{% endblock %}

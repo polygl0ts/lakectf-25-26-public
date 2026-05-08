@@ -1,0 +1,63 @@
+services:
+  # unit3d and related services
+  unit3d:
+    build: unit3d
+    ports:
+      - "8080:80"
+    environment:
+      WWWUSER: 1000
+      LARAVEL_SAIL: 1
+      XDEBUG_MODE: off
+    depends_on:
+      - mysql
+      - redis
+      - meilisearch
+    volumes:
+      - ./.env:/var/www/html/.env
+    restart: unless-stopped
+  mysql:
+    image: 'mysql:8.0'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    restart: unless-stopped
+  redis:
+    image: 'redis:alpine'
+    restart: unless-stopped
+  meilisearch:
+    image: 'getmeili/meilisearch:latest'
+    environment:
+      MEILI_NO_ANALYTICS: true
+    restart: unless-stopped
+
+  # webplayer services
+  webplayer:
+    build: ./webplayer
+    env_file: .env
+    ports:
+      - "8081:3000"
+      - "8082:8080"
+    volumes:
+      - ./data/webplayer_downloads:/downloads
+    restart: unless-stopped
+    extra_hosts:
+      - "chall.polygl0ts.ch:84.234.29.63" # temporary workaround before CTF start
+
+  qbittorrent-webplayer:
+    image: 'linuxserver/qbittorrent:latest'
+    network_mode: "service:webplayer"
+    environment:
+      PUID: '1000'
+      PGID: '1000'
+      TZ: 'Etc/UTC'
+      WEBUI_PORT: '8080'
+      TORRENTING_PORT: '6881'
+    volumes:
+      - ./webplayer/qBittorrent.conf:/config/qBittorrent/qBittorrent.conf:ro
+      - ./data/webplayer_downloads:/downloads
+      - ./webplayer/custom-cont-init.d:/custom-cont-init.d:ro
+    restart: unless-stopped
+    depends_on:
+      - webplayer

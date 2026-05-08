@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lain // OTP Sync</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <main class="shell">
+        <section class="panel">
+            <p class="eyebrow">phase two // <%= username %></p>
+            <h1>Editorial Access Activation</h1>
+            <p class="lede">An activation code is required.</p>
+        </section>
+
+        <section class="panel">
+            <label>
+                <span>Activation Code</span>
+                <input id="otp-code" type="text" inputmode="numeric" maxlength="4" placeholder="0000">
+            </label>
+            <div class="actions">
+                <button id="verify-btn" type="button">Activate</button>
+                <form method="post" action="/logout">
+                    <button class="ghost" type="submit">Disconnect</button>
+                </form>
+            </div>
+            <p id="status" class="status">Awaiting signal.</p>
+        </section>
+    </main>
+
+    <script>
+    const statusNode = document.getElementById('status');
+    document.getElementById('verify-btn').addEventListener('click', async () => {
+        const code = document.getElementById('otp-code').value.trim();
+        const response = await fetch('/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                query: 'mutation Verify($input: PinCheckInput!) { validatePin(input: $input) { ok message } }',
+                variables: {
+                    input: {
+                        pin: code,
+                        channel: 'editorial'
+                    }
+                }
+            })
+        });
+
+        const body = await response.json();
+        if (body.data && body.data.validatePin) {
+            const result = body.data.validatePin;
+            statusNode.textContent = result.message;
+            statusNode.className = 'status ' + (result.ok ? 'success' : 'error');
+            if (result.ok) {
+                window.setTimeout(() => window.location.href = '/dashboard', 400);
+            }
+            return;
+        }
+
+        statusNode.textContent = body.errors?.[0]?.message || 'Transport failure.';
+        statusNode.className = 'status error';
+    });
+    </script>
+</body>
+</html>

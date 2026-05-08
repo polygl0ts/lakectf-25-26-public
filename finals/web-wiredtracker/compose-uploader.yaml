@@ -1,0 +1,25 @@
+# This is running on a different server
+services:
+  flag_uploader:
+    build: flag_uploader
+    env_file: .env
+    volumes:
+      - ./data/uploader:/data
+    depends_on:
+      - rutorrent
+    restart: unless-stopped
+
+  rutorrent:
+    image: 'crazymax/rtorrent-rutorrent:latest'
+    ports:
+      - "6881:6881"
+      - "6881:6881/udp"
+      - "50000:50000"
+      - "50000:50000/udp"
+    environment:
+      RT_DHT_PORT: '6881'
+      RT_INC_PORT: '50000'
+    volumes:
+      - ./data/uploader/watch:/data/rtorrent/watch
+      - ./data/uploader/temp:/downloads/temp
+    restart: unless-stopped

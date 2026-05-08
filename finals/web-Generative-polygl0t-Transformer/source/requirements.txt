@@ -1,0 +1,5 @@
+bleach
+Flask
+gunicorn
+playwright
+requests

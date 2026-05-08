@@ -1,0 +1,45 @@
+# radare2 commands
+
+# shellcode for: cat flag + exit0
+s section..rodata
+wx+ 6866
+wx+ 6c61
+wx+ 676a
+wx+ 0258
+wx+ 4889
+wx+ e731
+wx+ d2b6
+wx+ 4031
+wx+ f60f
+wx+ 0548
+wx+ 29d4
+wx+ 4889
+wx+ c731
+wx+ c048
+wx+ 89e6
+wx+ 0f05
+wx+ 4889
+wx+ c26a
+wx+ 0158
+wx+ 6a01
+wx+ 5f48
+wx+ 89e6
+wx+ 0f05
+wx+ 31ff
+wx+ 6a3c
+wx+ 580f
+wx+ 05
+
+
+
+
+# change perms on .rodata segment
+s 0x124
+wx 05
+
+# PORCODIO 
+# ubuntu is retarded compiles with full relro bc they dont care about speed
+# as the users are retarded
+# so we change the relocation for init fuck ing array
+s 0x738 
+wx 0020

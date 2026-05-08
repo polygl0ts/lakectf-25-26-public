@@ -1,0 +1,12 @@
+[----------------------] (Off the shelf)
+[ UI Controller        ]
+[ Nice access of pins  ]
+[----------------------]
+  |          ^
+explode      |
+signal      pin for validation
+  |          |
+[---------------]
+[Bomb Controller]
+[---------------]
+

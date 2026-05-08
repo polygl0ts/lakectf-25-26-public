@@ -1,0 +1,23 @@
+services:
+  web:
+    build: ./web
+    restart: unless-stopped
+    ports:
+      - "8025:80"
+    environment:
+      - FLAG=EPFL{m4g1c_4cc0unt_t4k30ver!!}
+      - DOMAIN=auth.ctf.cx
+      - SMTP2HTTP_TOKEN=dde022e80ba263eb
+  
+  smtp2http:
+    build:
+      context: ./smtp2http
+    restart: unless-stopped
+    command: ["--webhook=http://web/api/email?token=dde022e80ba263eb,http://clutch.polygl0ts.ch:8025/api/email?token=dde022e80ba263eb,http://putain.polygl0ts.ch:8025/api/email?token=dde022e80ba263eb"]
+
+  mta:
+    build: ./mta
+    restart: unless-stopped
+    ports:
+      - "25:25"
+      - "587:25" # in case player's ISP blocks port 25

@@ -1,0 +1,18 @@
+---
+BasedOnStyle: Google
+AlignConsecutiveAssignments: AcrossEmptyLinesAndComments
+AlignConsecutiveDeclarations: AcrossComments
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+AlignEscapedNewlines: LeftWithLastLine
+AlignOperands: Align
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: Empty
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: Attach
+BreakStringLiterals: true
+ColumnLimit: 80
+IndentWidth: 4
+PenaltyBreakAssignment: 6

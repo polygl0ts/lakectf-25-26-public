@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+challenge_vm.c
+sudoku_vm_temp
+stage3.bin
+stage3_enc.bin

@@ -1,0 +1,175 @@
+codeexec options in modern glibc (2.43) exploitation:
++ rop
++ Abusing exit handlers
+	+ Overwriting tls_dtor_list
+	+ Overwriting initial
++ FSOP
+	+ overwrite existing file structure
+	+ overwrite _chain and fake a file structure and trigger on flush
++ printf conversion specifiers
+
+
+__run_exit_handlers triggers:
+	tls dtors
+	initial
+	_IO_flush_all (_chain fsop)
+
+
+interesting:
+	__new_quick_exit calls __run_exit_handlers
+
+
+
+building glibc:
+
+git clone git://sourceware.org/git/glibc.git
+cd glibc
+git checkout master
+mkdir build
+cd build
+mkdir install
+../configure --prefix "$(pwd)/install" --enable-bind-now
+compiledb make -j $(nproc)
+make install
+
+
+--enable-bind-now is important to enable Full RELRO
+
+
+
+
+1. leak ptr guard
+2. overwrite quick exit
+3. call quick exit
+
+you need 0x20 for the quick_initial overwrite
+
+need to overwrite:
+	idx to >0 (bitflip fine)
+	flavor to 4 (ideally if we want arg as rdi) (bitflip fine)
+	funcptr
+	arg
+
+
+
+i don't want to let them leak w/ stdout cuz then they can dump environ
+and do rop.
+	-> solved by not having puts()/printf() in the code
+	-> they cannot leak anything i don't directly give them
+
+
+idea:
+	bitflip on cxa exit
+	write one qword?
+
+
+
+
+
+weird looking stuff:
+260:1300│     0x7ffff7f85300 (obstack_alloc_failed_handler) —▸ 0x7ffff7e458e0 (print_and_abort) ◂— endbr64
+
+
+2d0:1680│     0x7ffff7f85680 (DW.ref.__gcc_personality_v0) —▸ 0x7ffff7dc4970 (__gcc_personality_v0) ◂— endbr64
+
+
+1404:a020│     0x7ffff7f8e020 —▸ 0x7ffff7ffe8c0 —▸ 0x7ffff7fc3000 ◂— jg 0x7ffff7fc3047
+
+145d:a2e8│     0x7ffff7f8e2e8 —▸ 0x7ffff7dc4900 (__libc_main) ◂— endbr64
+
+
+14c6:a630│     0x7ffff7f8e630 —▸ 0x7ffff7fc33d2 ◂— push rbp /* 'LINUX_2.6' */
+
+
+there is a valid onegadget that gets run at _dl_fini (initial ow.)
+
+0xd8171 execve("/bin/sh", rcx, r9)
++----------+-----------------------------------------------------+
+| Result   | Constraint                                          |
++==========+=====================================================+
+| UNSAT    | [rcx] == NULL || rcx == NULL || rcx is a valid argv |
++----------+-----------------------------------------------------+
+| SAT      | [r9] == NULL || r9 == NULL || r9 is a valid envp    |
++----------+-----------------------------------------------------+
+
+arghh doesn't work because of the rcx being set (argument to __run_exit_handlers)
+................
+
+pwndbg> x/gx 0x7ffff7e82830
+0x7ffff7e82830 <maybe_script_execute+272>:	0xeb000ca95b058d4c
+
+pwndbg> x/gx _dl_fini
+0x7ffff7fcaf60 <_dl_fini>:	0xe5894855fa1e0ff3
+
+pwndbg> p/t 0x7ffff7e82830
+$2 = 11111111111111111110111111010000010100000110000
+
+pwndbg> p/t 0x7ffff7fcaf60
+$3 = 11111111111111111110111111111001010111101100000
+
+would take ~8 bitflips over initial
+
+8 bitflips + qword write (arg0 = /bin/sh)
+
+ugh /bin/sh qword is 37 ~bits
+
+
+cool flavour idea:
+all puts() calls have one color - one being speaking
+all write() calls have another color - second being speaking (e.g. narrator)
+
+waking up lain floating in space while blind / deaf
+
+
+
+
+
+
+
+idea. maybe this is kinda cute:
+
+one binary gets executed and you have a bitflip on the libc binary itself
+	- flavour: shooting a sniper rifle
+
+then it spawns another binary with the new libc, and you get 6 more bitflips
+	- flavour: you had to drop your heavy sniper rifle, and are only left with a revolver
+
+6 bitflips should be enough given lucky ASLR to get the onegadget from the mangled initial
+use the one revolver shot to make onegadget work over _dl_fini
+	i.e. flip 0x7ffff7e0e374 <__GI_exit+4>:	mov    ecx,0x1
+	to
+			  0x7ffff7e0e374 <__GI_exit+4>:	mov    ecx,0x0
+
+
+a damn, 9 bitflips is needed
+
+
+
+
+
+
+gdb crash:
+	no binary no password: https://files.catbox.moe/92vglb.7z
+	stairwell binary and password: https://files.catbox.moe/jjmxpf.7z averytraingo0dpasswordthatw0ntbecr4cked
+
+	repro: run `./exploit.py ASLR` on the repro commit, connect with gdb to stairwell, then
+	go next, next, next, and on the last bitflip() it will die
+
+
+valid??
+
+
+0xd8171 execve("/bin/sh", rcx, r9)
++----------+-----------------------------------------------------+
+| Result   | Constraint                                          |
++==========+=====================================================+
+| SAT      | [rcx] == NULL || rcx == NULL || rcx is a valid argv |
++----------+-----------------------------------------------------+
+| SAT      | [r9] == NULL || r9 == NULL || r9 is a valid envp    |
++----------+-----------------------------------------------------+
+
+
+
+
+finding the ld in libc:
+ probeleak 0x7ffff7f53000 0x5b000 --point-to ld-linux

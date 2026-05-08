@@ -1,0 +1,33 @@
+[
+  {
+    "file": "exploit.c",
+    "arguments": [
+      "/usr/sbin/musl-gcc",
+      "exploit.c",
+      "-o",
+      "exploit",
+      "-Wall",
+      "-Wextra",
+      "-Wno-unused-function",
+      "-I/home/lamb/code/kernel-apostle/lib/"
+    ],
+    "directory": "/home/lamb/code/lakectf-25-26-internal/pwn-stardew-valley/source",
+    "output": "exploit"
+  },
+  {
+    "file": "exploit.c",
+    "arguments": [
+      "/usr/sbin/gcc",
+      "exploit.c",
+      "-o",
+      "exploit",
+      "-Wall",
+      "-Wextra",
+      "-Wno-unused-function",
+      "-I/home/lamb/code/kernel-apostle/lib/",
+      "-specs"
+    ],
+    "directory": "/home/lamb/code/lakectf-25-26-internal/pwn-stardew-valley/source",
+    "output": "exploit"
+  }
+]

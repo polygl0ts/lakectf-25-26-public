@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="32" viewBox="0 0 128 32">
+  <rect width="128" height="32" fill="white"/>
+  <!-- WVG Drawing with 18 elements -->
+  <!-- Element 0: Circular Polyline -->
+  <path d="M 3 15 L 16 15 A 6.577380952380952 6.577380952380952 0 1 0 3 15 A 8.568870526028313 8.568870526028313 0 0 0 16 22" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 1: Polyline -->
+  <path d="M 18 12 L 28 23" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 2: Polyline -->
+  <path d="M 18 23 L 28 12" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 3: Polyline -->
+  <path d="M 34 9 L 34 24" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 4: Polyline -->
+  <path d="M 34 15 L 37 15" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 5: Circular Polyline -->
+  <path d="M 41 10 A 4.642857142857143 4.642857142857143 0 0 1 49 10 A 4.0625 4.0625 0 0 1 49 17 A 4.0625 4.0625 0 0 1 49 24 A 4.642857142857143 4.642857142857143 0 0 1 41 24" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 6: Polyline -->
+  <path d="M 42 17 L 49 17" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 7: Circular Polyline -->
+  <path d="M 58 15 A 5.523809523809524 5.523809523809524 0 0 1 66 15 L 66 25" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 8: Polyline -->
+  <path d="M 58 11 L 58 25" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 9: Circular Polyline -->
+  <path d="M 78 12 A 4.228571428571428 4.228571428571428 0 0 0 70 12 L 77 23 A 3.7 3.7 0 0 1 70 23" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 10: Polyline -->
+  <path d="M 83 14 L 83 25" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 11: Polyline -->
+  <path d="M 83 9" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 12: Circular Polyline -->
+  <path d="M 89 12 L 89 26 A 4.142857142857143 4.142857142857143 0 0 0 95 26 L 95 12 A 4.142857142857143 4.142857142857143 0 0 0 89 12 L 95 26" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 13: Reuse of Element 7 -->
+  <path d="M 58 15 A 5.523809523809524 5.523809523809524 0 0 1 66 15 L 66 25" stroke="blue" stroke-width="2" fill="none" transform="translate(41,0)"/>
+  <!-- Element 14: Reuse of Element 8 -->
+  <path d="M 58 11 L 58 25" stroke="blue" stroke-width="2" fill="none" transform="translate(41,0)"/>
+  <!-- Element 15: Reuse of Element 9 -->
+  <path d="M 78 12 A 4.228571428571428 4.228571428571428 0 0 0 70 12 L 77 23 A 3.7 3.7 0 0 1 70 23" stroke="blue" stroke-width="2" fill="none" transform="translate(40,0)"/>
+  <!-- Element 16: Circular Polyline -->
+  <path d="M 122 7 A 1.8242372524668993 1.8242372524668993 0 1 1 124 10 L 124 15 L 127 18 L 124 21 L 124 26 A 1.8242372524668993 1.8242372524668993 0 1 1 122 29" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Element 17: Polyline -->
+  <path d="M 0 28 L 6 28" stroke="black" stroke-width="2" fill="none"/>
+</svg>

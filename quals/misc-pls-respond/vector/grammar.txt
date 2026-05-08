@@ -1,0 +1,176 @@
+<WVG>:= 1 <standard WVG header> <elements>
+
+<standard WVG header> ::= <general info> <color configuration> <codec parameters> <animation settings>
+<general info> ::= <version> 0 
+<version> ::= 0000…1111
+<color configuration> ::= <color scheme> <default colors> 
+<color scheme> ::= 00 ; black and white
+<default colors> := ( 0) ; use black when first bit is 0
+		( 0) ; use black when first bit is 0
+		( 0 )) ; use white when first bit is 0
+		; If above color(s) are not
+		; specified, use BLACK as <default line color> and <default fill color>, and use
+		; WHITE as <background color>.
+
+<codec parameters> ::= <element mask> <attribute mask> <generic parameters> <coordinate parameters>
+
+<coordinate parameters> ::=  0 <flat coordinate parameters>  ; flat coordinate mode
+
+<element mask> ::= 0 ; true for at least one local envelope element in the drawing
+		1 ; true for at least one polyline element in the drawing
+		1 ; true for at least one circular polyline element in the drawing
+		0 ; true for at least one Bezier polyline element in the drawing
+		0 ; true for at least one simple shape element in the drawing
+		1 ; true for at least one reuse element in the drawing
+		0 ; true for at least one group element in the drawing
+		0 ; true for at least one animation element in the drawing
+		0
+		;The decoder should decide how many bits to be used by <element type>
+		; according to number of “1”s in the <element mask>. Number of bits
+		; used by <element type> can be 0 (if only one “1” in <element mask>),
+		; 1 (if 2 “1”s), 2 (if 3 or 4 “1”s), 3 (if 5-8 “1”s) or 4(if more than 8
+		; “1”s). Value of <element type> that is to represent a specific element
+		; type is same as the order of the specific mask in the <element mask>
+		; that represents this type of element. For example, if <element mask> is
+		; 011000010, <element type> will use 2 bits and value 00, 01, 10
+		; (11 is not used) represent polyline, circular polyline and animation
+		; elements respectively. ==> HERE 3 ELEMENTS SO 2 BITS USED
+		
+
+<attribute masks> ::= 0000 ; no line type no line width no element fill no color
+
+<generic parameters> ::= 001<index in bits>  ; 0 for default (22.5 degree, 3 bits)
+ 			      ; 0 for default (1/4, 3 bits)
+ 			      ; 0 for default (both 3 bits)
+				<curve offset in bits> 
+			; <curve offset in bits> appear when <mask> for <circular polyline element>
+			; or <polygon element> is true 
+
+<curve offset in bits> ::= 0 | 1 ; 0 for using 4 bits (15 levels)
+				 ; 1 for using 5 bits (31 levels)
+				 
+				 
+				 
+				 
+<flat coordinate parameters> ::= <drawing width> 1 <drawing height> 
+				<MaxXInBits2><MaxYInBits2> < XYAllPositive>
+				<TransXYInBits2> <NumPointsInBits>
+				<OffsetXInBitsLevel1> <OffsetYInBitsLevel1>
+				<OffsetXInBitsLevel2> <OffsetYInBitsLevel2> 
+				
+<drawing width> ::= 'unsigned 16-bit integer'
+<MaxXInBits2> ::= 'unsigned_4_bit_integer' ; number of bits to encode X coordination
+<MaxYInBits2> ::= 'unsigned_4_bit_integer' ; number of bits to encode Y coordination
+<XYAllPositive> ::= 1 ; 0 means not all x/y are positive
+		      ; 1 means all x/y are positive
+<TransXYInBits2> ::= 'unsigned_4_bit_integer' ; number of bits to encode translation and center of transform
+<OffsetXInBitsLevel1> ::= 'unsigned_4_bit_integer'
+<OffsetYInBitsLevel1> ::= 'unsigned_4_bit_integer'
+<OffsetXInBitsLevel2> ::= 'unsigned_4_bit_integer'
+<OffsetYInBitsLevel2> ::= 'unsigned_4_bit_integer'
+<NumPointsInBits> ::= 'unsigned_4_bit_integer' 
+
+
+
+<animation settings> ::= [ <animation mode> ] ;appear when <animation element> exist ==> NO ANIMATION SO INVISIBLE
+
+
+
+
+
+
+<elements> := <number of elements> <element> { <element> }
+<number of elements> ::= (0 'unsigned 7-bit integer') 
+ 		       | (1 'unsigned 15-bit integer')
+
+<element> := <element type> (<basic element>| <re-use element>)
+
+<element type> ::= | 0…1 | 00..11 | 000…111 | 0000…1111 ; empty is allowed
+; decided by <element mask>. Please refer to <element mask> => 
+
+<basic element>::= <offset bit use> ( <polyline element> | <circular polyline element> )
+
+<Offset Bit Use> ::= <Offset X Use><Offset Y Use>
+<Offset X Use> ::= 0 | 1
+ 		; when in flat coordinate mode, 0 means offset X will use <OffsetXInBitsLevel1>,
+		; 1 means use <OffsetXInBitsLevel2>
+<Offset Y Use> ::= 0 | 1
+		 ; when in flat coordinate mode, 0 means offset X will use <OffsetYInBitsLevel1>
+		; 1 means use <OffsetYInBitsLevel2>
+		
+		
+		
+		
+
+
+<polyline element> ::= [ <numberOfPoints> ] <First Point> { <Next Point> }
+			; specifies a start point, zero or many intermediate points and an end point.
+			; <numberOfPoints> appears only when in flat coordinate mode
+<NumberOfPoints> ::= 'unsigned_NumberOfPointsInBits_bit integer' 	     
+<First Point> ::= <point> ; first point of a polyline or polygon (including circular and
+; Bezier polygons)
+<Next Point> ::= <Offset> ; when use offset mode
+			 ; in flat coordinate system, only offset mode is used.
+
+		
+<point> ::= <X> <Y>
+<X> ::=  'unsigned MaxXInBits2-bit integer' ; when in flat coordinate mode and <XYAllPositive> = 1
+<Y> ::= 'unsigned MaxYInBits2-bit integer' ; when in flat coordinate mode and <XYAllPositive> = 1	
+<Offset> ::= <Offset X> <Offset Y>		
+			
+<Offset X> ::= <signed offset X> ; when used by <Next Point>
+	     | <unsigned offset X> ; when used in other cases
+		
+<Offset Y> ::= <signed offset Y> ; when used by <Next Point> 	
+		 | <unsigned offset Y> ; when used in other cases 
+
+<signed offset X> ::= 'signed OffsetXInBitsLevel1-bit integer' ;when in flat coordinate mode and <offset bit use> = 0
+		  | 'signed OffsetXInBitsLevel2-bit integer' ;when in flat coordinate mode and <offset bit use> = 1
+<signed offset Y> ::= 'signed OffsetYInBitsLevel1-bit integer' ;when in flat coordinate mode and <offset bit use> = 0
+		  | 'signed OffsetYInBitsLevel2-bit integer' ;when in flat coordinate mode and <offset bit use> = 1
+
+<unsigned offset X> ::= 'unsigned OffsetXInBitsLevel1-bit integer' ;when in flat coordinate mode and <offset bit use> = 0
+		      | 'unsigned OffsetXInBitsLevel2-bit integer' ;when in flat coordinate mode and <offset bit use> = 1
+
+<unsigned offset Y> ::= 'unsigned OffsetYInBitsLevel1-bit integer' ;when in flat coordinate mode and <offset bit use> = 0
+ 		      | 'unsigned OffsetYInBitsLevel2-bit integer' ;when in flat coordinate mode and <offset bit use> = 1
+
+
+
+
+
+<circular polyline element> ::= <curve hint> <numberOfPoints>  <First Point> <curve offset> <point> { <curve offset> <Next Point> }
+			; <numberOfPoints> appears only when use
+			; flat coordinate mode
+
+
+<curve hint> ::= <hint>
+<hint> := 0 | 1 ; 0 for false, 1 for true 
+
+<curve offset> ::= ( 0 | (1 <curve offset value>) ) ; when <curve hint> is true
+ 		   | <curve offset value> ; when <curve hint> is false
+
+
+<curve offset value> ::= 'signed 4-bit integer' ; when <curve offset in bits> = 0
+ 					  ; or in character size WVG
+ 		| 'signed 5-bit integer' ; when <curve offset in bits> = 1
+					; Curve offset ratio r = e/L
+					; Where e is actual curve offset(can be positive or negative),
+					; L is distance between adjacent nodes
+					; We use a signed integer value v to represent. v = round(r*k);
+					; Where k = 2^n - 2 (n is number of bits used for <offset value>)
+					
+<re-use element> ::= <element index> ; point to the element to be re-used
+			 ; only <basic element>,<group element> and
+			; <re-use element> can be reused
+			<transform> 00; re-use with transformation
+<element index> ::= <index value> ; the element sequence number in whole drawing. Start from 0. 
+<index value> ::= 'unsigned IndexInBits+1-bit integer'
+
+<Transform> ::= <TranslateX><TranslateY> 0
+<TranslateX> ::= 0 | (1 <TranslateX Value> ) ; 0 means translate x will use default value which is 0
+<TranslateX Value> ::= 'signed_TransXYInBits2_bit integer' ; when in flat coordinate mode
+<TranslateY> ::= 0 | (1 <TranslateY Value> ) ; 0 means translate y will use default value which is 0
+<TranslateY Value> ::= 'signed_TransXYInBits2_bit integer' ; when in flat coordinate mode
+
+

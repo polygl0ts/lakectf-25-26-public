@@ -1,0 +1,60 @@
+x-challenge-env: &challenge-env
+  # Change these for any deployment you care about:
+  SECRET_KEY: change-me-flask-secret
+  ADMIN_USERNAME: admin
+  ADMIN_PASSWORD: change-me-admin-password
+  BOT_INTERNAL_TOKEN: change-me-bot-token
+  FLAG_COOKIE_NAME: flag
+  FLAG: polygl0ts{sample_flag_replace_me}
+  # Hostname served by the TLS proxy.
+  TLS_DOMAIN: localhost
+  # Origin the bot should visit. In Docker this should point at the app service,
+  # not localhost, because localhost would be the bot container itself.
+  BOT_VISIT_BASE_URL: http://app:8000
+
+services:
+  app:
+    build: ./source
+    environment: *challenge-env
+    expose:
+      - "8000"
+    volumes:
+      - ./instance:/app/instance
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=2).read()"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  bot:
+    build: ./source
+    environment: *challenge-env
+    command: ["python", "bot/bot.py"]
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # TLS reverse proxy. Fresh runs work without any setup: Caddy generates a
+  # self-signed cert on first boot. To swap in real certs see
+  # source/caddy/Caddyfile and source/certs/README.md.
+  proxy:
+    image: caddy:2-alpine
+    environment: *challenge-env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./source/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./source/certs:/certs:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

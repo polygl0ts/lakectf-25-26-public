@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+echo "Waiting for MySQL to be accessible..."
+until (echo > /dev/tcp/${DB_HOST:-mysql}/${DB_PORT:-3306}) 2>/dev/null; do
+    sleep 1
+done
+echo "MySQL is up."
+/var/www/html/artisan migrate:fresh --seed
+/var/www/html/artisan set:all_cache
+/var/www/html/artisan scout:sync-index-settings
+/var/www/html/artisan auto:sync_torrents_to_meilisearch --wipe
+/var/www/html/artisan auto:sync_people_to_meilisearch
+
+
+if [ "$SUPERVISOR_PHP_USER" != "root" ] && [ "$SUPERVISOR_PHP_USER" != "sail" ]; then
+    echo "You should set SUPERVISOR_PHP_USER to either 'sail' or 'root'."
+    exit 1
+fi
+
+if [ ! -z "$WWWUSER" ]; then
+    usermod -u $WWWUSER sail
+fi
+
+if [ ! -d /.composer ]; then
+    mkdir /.composer
+fi
+
+chmod -R ugo+rw /.composer
+
+if [ $# -gt 0 ]; then
+    if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
+        exec "$@"
+    else
+        exec gosu $WWWUSER "$@"
+    fi
+else
+    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+fi

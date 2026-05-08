@@ -1,0 +1,70 @@
+/*
+ * Custom styles for specific elements or overrides.
+ */
+
+/* Adjusting global font for better readability, keeping 'Press Start 2P' for specific elements like headers/titles */
+body, .card-text, .nav-link, .sidebar .card-body {
+    font-family: 'Roboto Mono', monospace; /* A more readable monospace font */
+    font-size: 1rem; /* Base font size for body text */
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .card-title, .card-header, .sidebar .card-header {
+    font-family: 'Press Start 2P', cursive; /* Keep the retro font for main headings */
+    color: #00FFFF; /* Ensure headings have strong contrast */
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7); /* Subtle glow for titles */
+}
+
+/* Specific adjustments for blog post content within the card-body */
+.post-content .card-title { /* Targeting titles specifically within post content */
+    font-size: 1.6rem; /* Make post main titles a bit larger */
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #00FFFF;
+}
+
+.post-content h2 { /* Targeting secondary headings within post content */
+    font-size: 1.2rem;
+    color: #00FFFF;
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.post-content p.card-text {
+    font-size: 0.95rem; /* Slightly larger and more readable for blog post paragraphs */
+    color: #00FF00; /* Ensure strong contrast */
+    margin-bottom: 1rem;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #00FFFF; /* Add a cyan border to images */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.6); /* Cyan glow for images */
+    margin-bottom: 1.5rem;
+}
+
+/* Whistleblower section improvements */
+.sidebar .card-body a {
+    display: block; /* Make the link take full width */
+    margin-top: 10px;
+    padding: 8px 10px;
+    background-color: #00FFFF;
+    color: #0a0a0c;
+    text-align: center;
+    border: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-family: 'Press Start 2P', cursive; /* Use retro font for button */
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+}
+
+.sidebar .card-body a:hover {
+    background-color: #FF00FF;
+    color: #0a0a0c;
+    box-shadow: 0 0 8px rgba(255, 0, 255, 0.8);
+}
+
+/* Utility classes for spacing if needed in HTML */
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.w-100 { width: 100% !important; }

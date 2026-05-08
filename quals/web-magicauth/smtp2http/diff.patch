@@ -1,0 +1,90 @@
+diff --git a/go.mod b/go.mod
+index a12f908..0402218 100644
+--- a/go.mod
++++ b/go.mod
+@@ -6,5 +6,6 @@ require (
+ 	github.com/alash3al/go-smtpsrv v0.0.0-20220704173150-cdaad3f3f582 // indirect
+ 	github.com/go-resty/resty/v2 v2.3.0
+ 	github.com/miekg/dns v1.1.50 // indirect
++	github.com/zaccone/spf v0.0.0-20170817004109-76747b8658d9 // indirect
+ 	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9 // indirect
+ )
+diff --git a/main.go b/main.go
+index b7b6b4f..097def2 100644
+--- a/main.go
++++ b/main.go
+@@ -6,12 +6,15 @@ import (
+ 	"fmt"
+ 	"io/ioutil"
+ 	"log"
++	"net"
+ 	"net/mail"
+ 	"strings"
++	"sync"
+ 	"time"
+ 
+ 	"github.com/alash3al/go-smtpsrv"
+ 	"github.com/go-resty/resty/v2"
++	"github.com/zaccone/spf"
+ )
+ 
+ func main() {
+@@ -27,7 +30,17 @@ func main() {
+ 				return errors.New("Cannot read your message: " + err.Error())
+ 			}
+ 
+-			spfResult, _, _ := c.SPF()
++			// replace source IP with the one from Received header because there is an additional MTA in front
++			var spfResult spf.Result = spf.None
++			receivedAddr := msg.Header.Get("Received")
++			if receivedAddr == "" {
++				spfResult, _, _ = c.SPF()
++			} else {
++				_, host, err := smtpsrv.SplitAddress(c.From().Address)
++				if err == nil {
++					spfResult, _, _ = spf.CheckHost(net.ParseIP(receivedAddr), host, c.From().Address)
++				}
++			}
+ 
+ 			jsonData := EmailMessage{
+ 				ID:            msg.MessageID,
+@@ -85,13 +98,32 @@ func main() {
+ 				})
+ 			}
+ 
+-			resp, err := resty.New().R().SetHeader("Content-Type", "application/json").SetBody(jsonData).Post(*flagWebhook)
+-			if err != nil {
+-				log.Println(err)
+-				return errors.New("E1: Cannot accept your message due to internal error, please report that to our engineers")
+-			} else if resp.StatusCode() != 200 {
+-				log.Println(resp.Status())
+-				return errors.New("E2: Cannot accept your message due to internal error, please report that to our engineers")
++			webhooks := strings.Split(*flagWebhook, ",")
++			var wg sync.WaitGroup
++			errChan := make(chan error, len(webhooks))
++
++			for _, webhook := range webhooks {
++				webhook = strings.TrimSpace(webhook)
++				wg.Add(1)
++				go func(url string) {
++					defer wg.Done()
++					client := resty.New().SetTimeout(3 * time.Second)
++					resp, err := client.R().SetHeader("Content-Type", "application/json").SetBody(jsonData).Post(url)
++					if err != nil {
++						log.Println(err)
++						errChan <- errors.New("E1: Cannot accept your message due to internal error, please report that to our engineers")
++					} else if resp.StatusCode() != 200 {
++						log.Println(resp.Status())
++						errChan <- errors.New("E2: Cannot accept your message due to internal error, please report that to our engineers")
++					}
++				}(webhook)
++			}
++
++			wg.Wait()
++			close(errChan)
++
++			if len(errChan) > 0 {
++				return <-errChan
+ 			}
+ 
+ 			return nil

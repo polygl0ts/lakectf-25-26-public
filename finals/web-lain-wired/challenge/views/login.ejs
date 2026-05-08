@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lain // Wired Gate</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <main class="shell">
+        <section class="panel hero">
+            <p class="eyebrow">serial experiment // login node</p>
+            <h1>Lain Wired Editorial Console</h1>
+            <p class="lede">Restricted editorial access.</p>
+        </section>
+
+        <section class="panel">
+            <h2>Operator Sign In</h2>
+            <% if (error) { %>
+                <p class="status error"><%= error %></p>
+            <% } %>
+            <% if (registeredUsername) { %>
+                <p class="status success">Account created for <code><%= registeredUsername %></code>. Sign in to continue.</p>
+            <% } %>
+            <form method="post" action="/login" class="stack">
+                <label>
+                    <span>Username</span>
+                    <input type="text" name="username" autocomplete="username" required>
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input type="password" name="password" autocomplete="current-password" required>
+                </label>
+                <button type="submit">Enter The Wired</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Create Operator Account</h2>
+            <p class="hint">Register a username and password to request editorial access.</p>
+            <% if (registerError) { %>
+                <p class="status error"><%= registerError %></p>
+            <% } %>
+            <form method="post" action="/register" class="stack">
+                <label>
+                    <span>Username</span>
+                    <input type="text" name="username" autocomplete="username" pattern="[a-z0-9_]{3,24}" required>
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input type="password" name="password" autocomplete="new-password" minlength="8" required>
+                </label>
+                <label>
+                    <span>Confirm Password</span>
+                    <input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required>
+                </label>
+                <button type="submit">Register Account</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

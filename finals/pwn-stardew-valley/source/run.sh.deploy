@@ -1,0 +1,13 @@
+#!/bin/sh
+
+/usr/bin/qemu-system-x86_64 \
+    -m 128M \
+    -cpu kvm64,+smep,+smap \
+    -smp 1 \
+    -kernel ./bzImage \
+    -initrd rootfs.cpio \
+    -snapshot \
+    -nographic \
+    -monitor /dev/null \
+    -no-reboot \
+    -append "console=ttyS0 kaslr kpti=1 quiet panic=1 oops=panic panic_on_warn=1 pti=on initcall_blacklist=algif_aead_init" 

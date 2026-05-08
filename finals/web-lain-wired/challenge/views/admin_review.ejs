@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lain // Internal Review</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="/submission/<%= submission.id %>.css">
+</head>
+<body class="admin-body">
+    <main class="shell">
+        <section class="panel">
+            <p class="eyebrow">internal reviewer only</p>
+            <h1>Pending Portrait Patch #<%= submission.id %></h1>
+            <p class="lede">Submitted by <code><%= submission.username %></code>. Release metadata is loaded alongside the avatar preview before the card is signed off.</p>
+        </section>
+
+        <section class="panel">
+            <h2>Avatar Preview</h2>
+            <article class="preview-card review-mode">
+                <div class="portrait-shell">
+                    <div class="portrait-screen" data-proof="<%= receiptMarkers.screen.char %>">
+                        <div class="avatar-card" data-proof="<%= receiptMarkers.card.char %>">
+                            <div class="avatar-stage" data-proof="<%= receiptMarkers.stage.char %>">
+                                <div class="avatar-shadow" data-proof="<%= receiptMarkers.shadow.char %>"></div>
+                                <div class="avatar-body" data-proof="<%= receiptMarkers.body.char %>">
+                                    <div class="avatar-head skin-region" data-proof="<%= receiptMarkers.head.char %>">
+                                        <div class="avatar-hair hair-region" data-proof="<%= receiptMarkers.hair.char %>"></div>
+                                        <div class="avatar-eye eye-region eye-left" data-proof="<%= receiptMarkers.eyeLeft.char %>"></div>
+                                        <div class="avatar-eye eye-region eye-right" data-proof="<%= receiptMarkers.eyeRight.char %>"></div>
+                                        <div class="avatar-mouth mouth-region" data-proof="<%= receiptMarkers.mouth.char %>"></div>
+                                    </div>
+                                    <div class="avatar-neck skin-region" data-proof="<%= receiptMarkers.neck.char %>"></div>
+                                    <div class="avatar-jacket jacket-region" data-proof="<%= receiptMarkers.jacket.char %>"></div>
+                                    <div class="avatar-shirt shirt-region" data-proof="<%= receiptMarkers.shirt.char %>"></div>
+                                    <div class="avatar-tie accent-region" data-proof="<%= receiptMarkers.tie.char %>"></div>
+                                </div>
+                            </div>
+                            <div class="card-caption">
+                                <span class="caption-label" data-proof="<%= receiptMarkers.captionLabel.char %>">preview subject</span>
+                                <strong class="caption-name" data-proof="<%= receiptMarkers.captionName.char %>">wired-girl</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-copy">
+                    <p class="eyebrow">preview target</p>
+                    <h3>Profile Card Generator</h3>
+                    <p class="hint">Patch rules are applied live to the avatar card before publication.</p>
+                    <p class="hint">Submission <code>#<%= submission.id %></code> by <code><%= submission.username %></code>.</p>
+                    <ul class="review-notes">
+                        <li class="review-note proofing-state" data-phase="<%= revisionMarkers.proofingState.char %>">Proofing lock engaged</li>
+                        <li class="review-note palette-state" data-phase="<%= revisionMarkers.paletteState.char %>">Palette checks synced</li>
+                        <li class="review-note subject-state" data-phase="<%= revisionMarkers.subjectState.char %>">Subject framing approved</li>
+                        <li class="review-note crop-state" data-phase="<%= revisionMarkers.cropState.char %>">Crop window verified</li>
+                        <li class="review-note lighting-state" data-phase="<%= revisionMarkers.lightingState.char %>">Lighting profile stable</li>
+                        <li class="review-note contrast-state" data-phase="<%= revisionMarkers.contrastState.char %>">Contrast pass recorded</li>
+                        <li class="review-note wardrobe-state" data-phase="<%= revisionMarkers.wardrobeState.char %>">Wardrobe patch linked</li>
+                        <li class="review-note delivery-state" data-phase="<%= revisionMarkers.deliveryState.char %>">Delivery handoff staged</li>
+                        <li class="review-note archive-state" data-phase="<%= revisionMarkers.archiveState.char %>">Archive mirror refreshed</li>
+                        <li class="review-note release-state" data-phase="<%= revisionMarkers.releaseState.char %>">Release record pending</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>

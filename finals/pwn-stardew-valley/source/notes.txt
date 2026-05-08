@@ -1,0 +1,30 @@
+spray 64 msg_msg around 0x1000
+
+
+0x20: <> <- inc once
+
+
+to get the actual slub_percpu_sheaves pointer you need to add $gs_base to it
+
+
+plan:
+
+inc the sheaf obj count to get overlapping -> uaf -> normal exp
+
+sheaf size targeted: kmalloc-512
+
+
+empty with 0x200 objects ~precisely
+then alloc lots of small objects to alloc sheafs in kmalloc-512
+overlap kmalloc-512 sheaf with our hackme object
+
+increase sheaf count
+
+
+
+we have to use msg_msg or something weird to hit a new cache to get a fresh
+pcs setup to hit __alloc_empty_sheaf
+
+
+
+doing a 512 msg_msg byte alloc causes a 256 sized sheaf to get allocated

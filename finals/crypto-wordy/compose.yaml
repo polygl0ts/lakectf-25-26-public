@@ -1,0 +1,9 @@
+services:
+  server:
+    build: .
+    ports:
+      - "6067:1337"
+    environment:
+      - FLAG=EPFL{wiNNing_w0rdl3_is_E4sy}
+    restart: unless-stopped
+    container_name: crypto-wordy

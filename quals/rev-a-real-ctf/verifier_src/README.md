@@ -1,0 +1,1 @@
+To build run `cargo build --release`, the executable can then be found under `target/release/verifier`

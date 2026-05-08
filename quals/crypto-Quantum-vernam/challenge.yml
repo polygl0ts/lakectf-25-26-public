@@ -1,0 +1,50 @@
+# This file represents the base specification of your challenge. It is used by
+# other tools to install and deploy your challenge.
+
+# Required sections
+name: "Quantum vernam"
+author: "lepirecauchemar"
+category: crypto
+description: "I used perfect secrecy to encode these qubits"
+value: 100
+type: dynamic
+
+
+extra:
+    initial: 500
+    decay: 209
+    minimum: 100 
+
+# Specify a host to deploy the challenge onto.
+# The currently supported URI schemes are ssh:// and registry://
+# ssh is an ssh URI where the above image will be copied to and deployed (e.g. ssh://root@123.123.123.123)
+# registry is a Docker registry tag (e.g registry://registry.example.com/test/image)
+# host can also be specified during the deploy process: `ctf challenge deploy challenge --host=ssh://root@123.123.123.123`
+host: null
+
+image: .
+
+
+# Optional settings
+state: visible
+connection_info: nc chall.polygl0ts.ch 6002
+# healthcheck is a tool/script used to check a challenge
+# If connection_info was provided to CTFd when the challenge was installed, it will be passed to the healthcheck script:
+# ./writeup/exploit.sh --connection-info "nc chall.polygl0ts.ch 12345"
+# healthcheck: ./exploit.py # This might not be a great health check since it only succeeds with probability < 1
+
+# Flags specify answers that your challenge use. You should generally provide at least one.
+# Can be removed if unused
+# Accepts strings or dictionaries of CTFd API data
+flags:
+  - "EPFL{URE_3ITH3R_QU4NTUM_BOSSssss_OR_LINALG_BOSS}"
+
+files:
+  - chall.py
+
+# Specifies what version of the challenge specification was used.
+# Subject to change until ctfcli v1.0.0
+version: "0.1"
+
+tags:
+  - "author:lepirecauchemar"

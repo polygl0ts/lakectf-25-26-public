@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lain // Control Surface</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <style id="live-preview-style"></style>
+</head>
+<body>
+    <main class="shell">
+        <section class="panel hero">
+            <p class="eyebrow">operator console</p>
+            <h1><%= page === 'logs' ? 'Review Telemetry' : 'Avatar Patch Queue' %></h1>
+            <p class="lede">Avatar patches are reviewed internally before release. Asset fetches during review are logged below.</p>
+            <nav class="nav-row">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/telemetry">Review Telemetry</a>
+                <form method="post" action="/logout">
+                    <button class="ghost" type="submit">Disconnect</button>
+                </form>
+            </nav>
+        </section>
+
+        <% if (message) { %>
+            <section class="panel">
+                <p class="status success"><%= message %></p>
+            </section>
+        <% } %>
+
+        <% if (page === 'dashboard') { %>
+            <section class="panel">
+                <h2>Avatar Theme Patch</h2>
+                <p class="hint">Submit a CSS patch for the profile card generator. Your stylesheet is mounted into the reviewer exactly as submitted.</p>
+                <article class="preview-card">
+                    <div class="portrait-shell">
+                        <div class="portrait-screen">
+                            <div class="avatar-card">
+                                <div class="avatar-stage">
+                                    <div class="avatar-shadow"></div>
+                                    <div class="avatar-body">
+                                        <div class="avatar-head skin-region">
+                                            <div class="avatar-hair hair-region"></div>
+                                            <div class="avatar-eye eye-region eye-left"></div>
+                                            <div class="avatar-eye eye-region eye-right"></div>
+                                            <div class="avatar-mouth mouth-region"></div>
+                                        </div>
+                                        <div class="avatar-neck skin-region"></div>
+                                        <div class="avatar-jacket jacket-region"></div>
+                                        <div class="avatar-shirt shirt-region"></div>
+                                        <div class="avatar-tie accent-region"></div>
+                                    </div>
+                                </div>
+                                <div class="card-caption">
+                                    <span class="caption-label">preview subject</span>
+                                    <strong class="caption-name">wired-girl</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preview-copy">
+                        <p class="eyebrow">target asset</p>
+                        <h3>Profile Card Generator</h3>
+                        <p class="hint">Common tweaks: hair tint, eye color, skin tone, jacket color, shirt color, tie accent, card shadow, and background accents.</p>
+                        <p class="hint">Useful hooks include <code>.avatar-card</code>, <code>.hair-region</code>, <code>.eye-region</code>, <code>.skin-region</code>, <code>.shirt-region</code>, <code>.jacket-region</code>, and <code>.accent-region</code>.</p>
+                    </div>
+                </article>
+                <form method="post" action="/submit" class="stack">
+                    <label>
+                        <span>Custom CSS</span>
+                        <textarea id="css-input" name="css" rows="14" placeholder=".hair-region { background: #6c4ac9; }&#10;.eye-region { background: #ff5b99; box-shadow: 0 0 8px rgba(255,91,153,.55); }&#10;.jacket-region { background: #20243a; }&#10;.shirt-region { background: #f3f3f3; }&#10;.accent-region { background: #00c2a8; }"></textarea>
+                    </label>
+                    <button type="submit">Queue Review</button>
+                </form>
+            </section>
+
+            <section class="panel">
+                <h2>Your Patch Queue</h2>
+                <% if (!submissions.length) { %>
+                    <p class="hint">No avatar patches queued yet.</p>
+                <% } %>
+                <% submissions.forEach((submission) => { %>
+                    <article class="list-item">
+                        <span>#<%= submission.id %></span>
+                        <span><%= submission.status %></span>
+                        <a href="/preview/<%= submission.id %>">preview</a>
+                        <a href="/submission/<%= submission.id %>.css">stylesheet</a>
+                    </article>
+                <% }) %>
+            </section>
+
+            <section class="panel">
+                <h2>Release Reviewed Card</h2>
+                <form method="post" action="/internal/publish" class="stack compact">
+                    <label>
+                        <span>Submission ID</span>
+                        <input type="number" name="submissionId" required>
+                    </label>
+                    <label>
+                        <span>Release Receipt</span>
+                        <input type="text" name="receipt" required>
+                    </label>
+                    <label>
+                        <span>Revision Stamp</span>
+                        <input type="text" name="revision" required>
+                    </label>
+                    <button type="submit">Release</button>
+                </form>
+            </section>
+        <% } else { %>
+            <section class="panel">
+                <h2>Review Telemetry</h2>
+                <p class="hint">Asset requests triggered during review of your patches.</p>
+                <% if (!logs.length) { %>
+                    <p class="hint">Nothing captured yet.</p>
+                <% } %>
+                <% logs.forEach((log) => { %>
+                    <article class="list-item">
+                        <span>submission <%= log.submission_id %></span>
+                        <span><%= log.request_path %></span>
+                    </article>
+                <% }) %>
+            </section>
+        <% } %>
+    </main>
+    <% if (page === 'dashboard') { %>
+    <script>
+    const cssInput = document.getElementById('css-input');
+    const livePreviewStyle = document.getElementById('live-preview-style');
+
+    if (cssInput && livePreviewStyle) {
+        const syncPreview = () => {
+            livePreviewStyle.textContent = cssInput.value;
+        };
+
+        cssInput.addEventListener('input', syncPreview);
+        syncPreview();
+    }
+    </script>
+    <% } %>
+</body>
+</html>

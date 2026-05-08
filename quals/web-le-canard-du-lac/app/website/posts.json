@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "title": "Jet d'Eau Under Siege: A Deep Dive into Geneva's Water System",
+        "content": "Is the iconic Jet d'Eau more than just a tourist attraction? We investigate the latent vulnerabilities in the city's water management system. A tale of intrigue, civic infrastructure, and questionable SCADA security.",
+        "image_url": "static/images/jet_d_eau_hacked.png",
+        "post_url": "Jet-d-Eau-Under-Siege"
+    },
+    {
+        "id": 2,
+        "title": "The CERN Conspiracy: Is the LHC a Stargate to a Digital Dimension?",
+        "content": "We've all heard the official story about the Large Hadron Collider. But what if the truth is far stranger? We explore the wildest conspiracy theories, from black holes to interdimensional gateways.",
+        "image_url": "static/images/cern_conspiracy.png",
+        "post_url": "The-CERN-Conspiracy"
+    },
+    {
+        "id": 3,
+        "title": "FondueGate: How a Cheesy Vulnerability Melted Swiss Bank Security",
+        "content": "A story that's almost too good to be true. We uncover how a seemingly innocent fondue recipe shared on a Swiss bank's internal server led to a multi-million franc security breach. You'll never look at Gruyère the same way again.",
+        "image_url": "static/images/fondue_gate.png",
+        "post_url": "FondueGate"
+    },
+    {
+        "id": 4,
+        "title": "The Montreux Jazz Festival's Secret Frequencies",
+        "content": "Beyond the smooth tunes and lakeside views, the Montreux Jazz Festival has a hidden history of espionage and secret communications. We tune into the stories of spies, shortwave radio, and coded messages hidden in plain sight.",
+        "image_url": "static/images/montreux_jazz.png",
+        "post_url": "Montreux-Jazz-Festival-Secrets"
+    },
+    {
+        "id": 5,
+        "title": "The UN's Hidden Network: A Labyrinth of Secrets Beneath Palais des Nations",
+        "content": "The United Nations preaches transparency, but what lies beneath their European headquarters? We map out the hidden tunnels, forgotten servers, and the digital ghosts that haunt the Palais des Nations.",
+        "image_url": "static/images/un_secrets.png",
+        "post_url": "UN-Hidden-Network"
+    },
+    {
+        "id": 6,
+        "title": "The Lavaux Vineyards: Are They Irrigated with Data?",
+        "content": "The picturesque vineyards of Lavaux are a UNESCO World Heritage site. But what if the grapes are not just fed by water, but by data? We investigate the high-tech sensors and automated systems that run this ancient landscape.",
+        "image_url": "static/images/lavaux_data.png",
+        "post_url": "Lavaux-Vineyards-Data"
+    },
+    {
+        "id": 7,
+        "title": "The Swiss Army Knife: The Original Multi-Tool for Hackers",
+        "content": "Before there were laptops and smartphones, there was the Swiss Army Knife. We pay homage to the original hacker's multi-tool and explore its surprising uses in the digital age.",
+        "image_url": "static/images/swiss_army_knife.png",
+        "post_url": "Swiss-Army-Knife-Hacking"
+    },
+    {
+        "id": 8,
+        "title": "The Lake Leman Monster: A Deep-Sea Cable Anomaly?",
+        "content": "For centuries, locals have whispered tales of a monster lurking in the depths of Lake Leman. What if the monster is not a creature of flesh and blood, but a rogue AI living in the transatlantic cables that run along the lakebed?",
+        "image_url": "static/images/leman_monster.png",
+        "post_url": "Lake-Leman-Monster"
+    }
+]

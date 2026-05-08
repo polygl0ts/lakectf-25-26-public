@@ -1,0 +1,24 @@
+{
+    # Disable automatic public ACME (Let's Encrypt) — we either use Caddy's
+    # internal self-signed issuer (default) or user-provided certs in /certs.
+    auto_https disable_certs
+}
+
+{$TLS_DOMAIN:localhost}:443 {
+    # Default: Caddy generates a self-signed cert on first boot using its
+    # internal CA. Browsers will show a warning — fine for local/dev use.
+    # To use your own certificates, comment out the line below and uncomment
+    # the `tls` line referencing /certs/cert.pem and /certs/key.pem instead.
+    tls internal
+    # tls /certs/cert.pem /certs/key.pem
+
+    encode gzip zstd
+    reverse_proxy app:8000 {
+        header_up X-Forwarded-Proto https
+    }
+}
+
+# Plain HTTP → HTTPS redirect.
+:80 {
+    redir https://{host}{uri} permanent
+}

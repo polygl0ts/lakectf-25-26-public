@@ -1,0 +1,4 @@
+EPFL{4re-th3y-really-g0nna-sh1p-th1s?-it's-g0nna-b3-4-b0untiful-h4rv3st}
+
+the fake flag is in rootfs/root/flag.txt
+deploy/rootfs.cpio has the actual flag

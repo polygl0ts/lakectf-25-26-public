@@ -1,0 +1,20 @@
+[project]
+name = "wordy"
+version = "0.1.0"
+description = "MT19937 state recovery from partial observations using Z3"
+requires-python = ">=3.9"
+dependencies = [
+]
+
+[dependency-groups]
+dev = [
+    "numpy>=2.0.2",
+    "pwntools>=4.15.0",
+    "z3-solver",
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: Z3-based tests (~50–65 s each)",
+]

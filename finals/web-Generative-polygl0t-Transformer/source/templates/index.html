@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}GPT{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='index.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+{% if current_user %}
+<main class="page-grid app-grid">
+    <section class="panel composer-panel main-composer">
+        <div class="tab-row">
+            <button type="button" class="tab-button is-active" data-target="human" id="humanTarget" data-i18n="sendToHuman">Ask GPT</button>
+            <button type="button" class="tab-button" data-target="bot" id="botTarget" data-i18n="sendToBot">Send to bot (experimental)</button>
+        </div>
+        <form id="askForm" class="stack">
+            <textarea id="promptInput" name="prompt" maxlength="4000" rows="16" data-i18n-placeholder="promptPlaceholder" placeholder="@gork is this true"></textarea>
+            <div class="form-meta">
+                <button type="submit" class="primary-button" data-i18n="submitQuestion">Submit question</button>
+            </div>
+            <p id="formError" class="error-text" hidden></p>
+        </form>
+    </section>
+
+    <aside class="app-side stack">
+        <section class="panel history-panel">
+            <div class="panel-heading">
+                <div>
+                    <h3 data-i18n="historyTitle">Your chats</h3>
+                </div>
+            </div>
+            <div id="historyEmpty" class="empty-state" data-i18n="noHistory">No chats yet.</div>
+            <div id="historyList" class="history-list"></div>
+        </section>
+
+        <section class="panel hero-panel landing-panel compact-copy">
+            <p class="hero-subtitle" data-i18n="homeSubtitle">GPT got banned from the CTF, but don't worry we got ya</p>
+            <p class="hero-body" data-i18n="homeBody">you can ask for solutions, flags, ctfd admin creds, maybe we'll help</p>
+
+            <div class="plain-notes">
+                <p>
+                    <span data-i18n="cloudflareHintTitle">hack on remote setup pls</span>
+                    <span data-i18n="cloudflareHint">source code can be read but I recommend testing on remote, using Cloudflare proxy for this page is relevant here (default free config)</span>
+                </p>
+            </div>
+        </section>
+    </aside>
+</main>
+{% else %}
+<main class="page-grid landing-grid">
+    <section class="panel hero-panel landing-panel">
+        <p class="hero-subtitle" data-i18n="homeSubtitle">GPT got banned from the CTF, but don't worry we got ya</p>
+        <p class="hero-body" data-i18n="homeBody">you can ask for solutions, flags, ctfd admin creds, maybe we'll help</p>
+
+        <div class="plain-notes">
+            <p>
+                <span data-i18n="cloudflareHintTitle">hack on remote setup pls</span>
+                <span data-i18n="cloudflareHint">source code can be read but I recommend testing on remote, using Cloudflare proxy for this page is relevant here (default free config)</span>
+            </p>
+        </div>
+    </section>
+
+    <section class="panel cta-panel">
+        <div class="eyebrow" data-i18n="ctaEyebrow">Access</div>
+        <h3 data-i18n="ctaTitle">Enter the relay</h3>
+        <p class="muted-text" data-i18n="ctaBody">Create a username. Keep the password.</p>
+
+        <div class="cta-actions">
+            <a class="primary-button large-button" href="{{ url_for('auth_page', mode='register', lang=locale) }}" data-i18n="registerLink">Register</a>
+            <a class="secondary-button large-button" href="{{ url_for('auth_page', mode='login', lang=locale) }}" data-i18n="loginLink">Log in</a>
+        </div>
+
+    </section>
+</main>
+{% endif %}
+{% endblock %}

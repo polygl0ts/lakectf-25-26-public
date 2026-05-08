@@ -1,0 +1,81 @@
+services:
+  stackception-1:
+    build:
+      context: .
+      target: jail-1
+    restart: unless-stopped
+    ports:
+      - 6042:5000
+    cap_drop:
+      - all
+    cap_add:
+      - chown
+      - setuid
+      - setgid
+      - sys_admin
+      - mknod
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+      - systempaths=unconfined
+    develop:
+      watch:
+        - action: rebuild
+          path: ./
+
+  stackception-2:
+    build:
+      context: .
+      target: jail-2
+    restart: unless-stopped
+    ports:
+      - 6043:5000
+    cap_drop:
+      - all
+    cap_add:
+      - chown
+      - setuid
+      - setgid
+      - sys_admin
+      - mknod
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+      - systempaths=unconfined
+    develop:
+      watch:
+        - action: rebuild
+          path: ./
+
+  stackception-3:
+    build:
+      context: .
+      target: jail-3
+    restart: unless-stopped
+#    ports:
+#      - 6044:5000
+    cap_drop:
+      - all
+    cap_add:
+      - chown
+      - setuid
+      - setgid
+      - sys_admin
+      - mknod
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+      - systempaths=unconfined
+    develop:
+      watch:
+        - action: rebuild
+          path: ./
+
+  stackception-builder:
+    build:
+      context: .
+      target: builder
+    volumes:
+      - ./:/mnt:rw
+    deploy:
+      replicas: 0

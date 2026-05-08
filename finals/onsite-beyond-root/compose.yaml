@@ -1,0 +1,12 @@
+services:
+  misc-iot-web:
+    build: .
+    ports:
+      - 9999:5000
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "9999"
+      # Optional: reach ESP32 via the host (Docker Desktop) or set to LAN IP
+      # ESP32_BASE_URL: "http://host.docker.internal:80"
+      # Optional: custom paths inside the container
+      # IMAGE_PATH: "/app/stored_image.png"

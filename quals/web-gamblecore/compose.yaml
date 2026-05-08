@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web-gamblecore:
+    build: ./app
+    ports:
+      - "8148:3000"
+    environment:
+      - FLAG=EPFL{we_truly_live_in_a_society}
+

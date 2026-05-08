@@ -1,0 +1,7 @@
+services:
+  conversation:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 6931:5000
+    privileged: true

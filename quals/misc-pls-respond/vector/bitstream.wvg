@@ -1,0 +1,262 @@
+;; ext3nsi0ns}
+
+1
+0000 0 ; version
+00 000; color scheme black and default line and fill BLACK and default bg as WHITE
+011001000; encoding = {00:Polyline,01:Circular Polyline,10: reused,11:Unused}
+0000 ; no line type no line width no element fill no color
+001 0100 0 ; default degree 22.5, 3bits, default scale 1/4 3bits
+            ; special indexing is 4 bits
+            ; curve offset 4 bits
+0 ; flat coordinates
+0000000010000000 ; width=128
+1 0000000000100000; height!=width and height = 32
+0111 ; x is encoded in 7 bits
+0101 ; y is encoded in 5 bits
+1 ; all x y are positive
+0111 ; transformation is 7 bits
+0011 ; num points is 3 bits (-> 7 max)
+0011 ; offset X 1 is 3 bits
+0011 ; offset Y 1 is 3 bits
+0101 ; offset X 2 is 5 bits
+0101 ; offset Y 2 is 5 bits
+
+; e: 1 circular polyline
+; x: 2 polyline
+; t: 2 polyline
+; 3: 1 circular, 1 normal
+; n: 1 circular, 1 normal
+; s: 1 circular
+; i: 1 polyline, 1 rectangle
+; 0: 1 circular
+; n: 1 circular, 1 normal
+; s: 1 circular
+; }: 1 circular
+; 17 elements
+
+0 0010010; 18 elements
+
+;i
+00; polyline (for the dot)
+00; use small x and small y offset
+000; 0 point
+1010011; x=83
+01001 ; y = 9
+
+00; polyline
+01; use small x and large y offset
+001; 1 points
+1010011; x=83
+01110 ; y = 14
+000; offset x = 0
+01011; offset y = 11
+
+
+; e
+01; circular
+11; use large x offset large y offset
+1; curve hint true
+010; 2 points
+0000011; x=3
+01111; y = 15
+0; straight line
+0010000;x=16 second point
+01111;y=15 second point
+1 1010; -0.4*14=-6 curve offset
+10011 ; offset x = -13
+00000; offset y = 0
+1 1100; -4 curve offset
+01101; offset x = 13
+00111; offset y = 7
+
+; x
+00; polyline
+11; use large x and y offset
+001; 1 points
+0010010; x = 18
+01100; y = 12
+01010; offset x = 10
+01011; offset y = 11
+
+00; polyline
+11; use large x and y offset
+001; 1 points
+0010010; x = 18
+10111; y = 23
+01010; offset x = 10
+10101; offset y = -11
+
+; t
+00; polyline
+01; use small x and large y offset
+001; 1 points
+0100010; x=34
+01001 ; y = 9
+000; offset x = 0
+01111; offset y = 15
+
+00; polyline
+00; use small x and small y offset
+001; 1 points
+0100010; x=34
+01111 ; y = 15
+011; offset x = 3
+000; offset y = 0
+
+
+; 3
+01; circular
+11; use large x offset large y offset
+0; curve hint false
+011; 3 points
+0101001; x=41
+01010; y = 10
+0100; 0.3*14=4 curve offset 
+0110001;x=49 second point
+01010;y=10 second point
+0100; 0.3*14=4 curve offset 
+00000 ; offset x = 0
+00111; offset y = 7
+0100; 0.3*14=4 curve offset 
+00000 ; offset x = 0
+00111; offset y = 7
+0100; 0.3*14=4 curve offset 
+11000 ; offset x = -8
+00000; offset y = 0
+
+00; polyline
+10; use large x and small y offset
+001; 1 points
+0101010; x=42
+10001 ; y = 17
+00111; offset x = 7
+000; offset y = 0
+
+
+; n
+01; circular
+01; use small x offset large y offset
+1; curve hint true
+001; 1 points
+0111010; x=58
+01111; y = 15
+1 0011; 0.2*14=3 curve offset 
+1000010;x=66 second point
+01111;y=15 second point
+0; no curve offset
+000 ; offset x = 0
+01010; offset y = 10
+
+
+00; polyline
+01; use small x and large y offset
+001; 1 points
+0111010; x=58
+01011 ; y = 11
+000; offset x = 0
+01110; offset y = 14
+
+
+
+; s
+01; circular
+11; use large x offset large y offset
+1; curve hint true
+010; 2 points
+1001110; x=78
+01100; y = 12
+1 1011; -0.4*14=-5 curve offset 
+1000110;x=70 second point
+01100; y = 12 second point
+0; no curve offset
+00111 ; offset x = 7
+01011; offset y = 11
+1 0101; 0.4*14=5 curve offset 
+11001 ; offset x = -7
+00000; offset y = 0
+
+
+
+
+
+
+; 0
+01; circular
+11; use large x offset large y offset
+1; curve hint true
+100; 4 points
+1011001; x=89
+01100; y = 12
+0; no curve offset 
+1011001; x=89 snd point
+11010; y = 26 snd point
+1 1101; -3 curve offset (bottom)
+00110 ; offset x = 6
+00000; offset y = 0
+0; no curve offset 
+00000 ; offset x = 0
+10010; offset y = -14
+1 1101; -3 curve offset (bottom)
+11010 ; offset x = -6
+00000; offset y = 0
+0; no curve offset 
+00110 ; offset x = 6
+01110; offset y = 14
+
+
+; 2nd n, reuse 7 and 8
+10; re-use
+01001; index 7
+1 0101001; trans_x = +41
+0; trans_y = 0
+0 00; just translation (end of transform and re-use)
+
+10; re-use
+01010; index 8
+1 0101001; trans_x = +41
+0; trans_y = 0
+0 00; just translation (end of transform and re-use)
+
+; 2nd s, reuse 9
+10; re-use
+01011; index 9
+1 0101000; trans_x = +40
+0; trans_y = 0
+0 00; just translation (end of transform and re-use)
+
+
+; }
+01; circular
+01; use small x offset large y offset
+1; curve hint true
+101; 5 points
+1111010; x=122
+00111; y = 7
+1 0110; curve 6
+1111100; x=124 second point
+01010; y=10 second point
+0; curve offset straight
+000 ; offset x = 0 
+00101; offset y = 5
+0; curve offset straight
+011; offset x = 3
+00011; offset y = 3
+0; curve offset straight
+101; offset x = -3
+00011; offset y = 3
+0; curve offset straight
+000; offset x = 0 
+00101; offset y = 5
+1 0110; curve 6
+110; offset x = -2 
+00011; offset y = 3
+
+
+; _ )at the beginning
+00; polyline (for the dot)
+10; use large x and small y offset
+001; 1 points
+0000000; x=0
+11100 ; y = 28
+00110; offset x = 6
+000; offset y = 0

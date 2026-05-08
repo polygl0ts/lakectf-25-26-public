@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}relay access{% endblock %}
+
+{% block head %}
+<script>
+    window.PAGE_DATA.authMode = {{ auth_mode|tojson }};
+</script>
+<script src="{{ url_for('static', filename='auth.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<main class="page-grid auth-page-grid auth-compact-grid">
+    <section class="panel auth-panel auth-page-panel">
+        <div class="panel-heading">
+            <div>
+                <div class="eyebrow" data-i18n="authEyebrow">Login layer</div>
+                <h3 data-i18n="authTitle">Access</h3>
+            </div>
+        </div>
+        <p class="muted-text auth-lead" data-i18n="authBody">Username creates an account. Password is shown once.</p>
+
+        <div class="auth-tabs" role="tablist">
+            <button type="button" class="auth-tab is-active" id="registerTab" data-auth-target="register" data-i18n="registerTab">Create account</button>
+            <button type="button" class="auth-tab" id="loginTab" data-auth-target="login" data-i18n="loginTab">I already have a password</button>
+        </div>
+
+        <div class="auth-pane stack" data-auth-pane="register">
+            <form id="registerForm" class="stack auth-form">
+                <label for="registerUsername" class="field-label" data-i18n="usernameLabel">Username</label>
+                <input id="registerUsername" name="username" type="text" maxlength="24" autocomplete="username" data-i18n-placeholder="usernamePlaceholder" placeholder="teamname">
+                <p class="status-note" data-i18n="usernameRules">Use 3-24 lowercase letters, digits, or underscores.</p>
+                <button type="submit" class="primary-button" data-i18n="continueButton">Continue</button>
+                <p id="registerError" class="error-text" hidden></p>
+            </form>
+
+            <div id="registerSuccess" class="message-card success-card stack" hidden>
+                <div class="message-label" data-i18n="registerResultTitle">Account created</div>
+                <p class="muted-text" data-i18n="registerResultBody">Password shown once. Store it.</p>
+                <div class="generated-secret">
+                    <span class="field-label" data-i18n="generatedPasswordLabel">Generated password</span>
+                    <code id="generatedPassword"></code>
+                </div>
+                <div class="generated-actions">
+                    <button type="button" class="secondary-button" id="copyPasswordButton" data-i18n="copyPasswordButton">Copy password</button>
+                    <button type="button" class="primary-button" id="continueToLogin" data-i18n="continueToLogin">Continue to login</button>
+                </div>
+                <p class="warning" data-i18n="savePasswordWarning">Lost means new account.</p>
+                <p class="status-note" id="copyFeedback" hidden></p>
+            </div>
+        </div>
+
+        <div class="auth-pane stack" data-auth-pane="login" hidden>
+            <form id="loginForm" class="stack auth-form">
+                <label for="loginUsername" class="field-label" data-i18n="usernameLabel">Username</label>
+                <input id="loginUsername" name="username" type="text" maxlength="24" autocomplete="username" data-i18n-placeholder="usernamePlaceholder" placeholder="teamname">
+                <label for="loginPassword" class="field-label" data-i18n="passwordLabel">Password</label>
+                <input id="loginPassword" name="password" type="password" maxlength="64" autocomplete="current-password" data-i18n-placeholder="passwordPlaceholder" placeholder="paste your saved password">
+                <button type="submit" class="primary-button" data-i18n="loginButton">Log in</button>
+                <p id="loginError" class="error-text" hidden></p>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}
