@@ -5,4 +5,4 @@
 + Intended difficulty: easy
 + Solves during competition: 2/10
 
-Writeup not provided by author, ping `robroblore` on discord please :)
+Writeup not provided by author, ping `robroblore` on discord for the writeup please :)

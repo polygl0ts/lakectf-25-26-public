@@ -5,4 +5,4 @@
 + Intended difficulty: medium
 + Solves during competition: 9/10
 
-Author didn't upload writeup, ping him (`cyanpencil`) on discord please :)
+Author didn't upload writeup, ping him (`cyanpencil`) on discord for the writeup please :)
