@@ -1,0 +1,7 @@
+services:
+  the_lab_1:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 6868:5000
+    privileged: true
