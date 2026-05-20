@@ -5,7 +5,7 @@
 + Intended difficulty: easy/medium
 + Solves during competition: 5/10
 
-I'll publish a more detailed writeup with my authoring experience on [my blog](https://hazyclimb.dev/) soonish.
+I'll publish a more detailed writeup with my authoring experience on [my blog](https://hazyclimb.dev/) soonish. Edit: Here it is: https://hazyclimb.dev/posts/2026-lake-gun/ .
 
 ## The challenge
 
